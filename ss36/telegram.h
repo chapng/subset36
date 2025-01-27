@@ -115,6 +115,7 @@ public:
     unsigned int        number_of_userbits;         // #unshaped (10->11) user bits (m=N_USERBITS_L or N_USERBITS_S)
     unsigned int        number_of_shapeddata_bits;  // #bits in shaped data (N_SHAPEDDATA_L or N_SHAPEDDATA_S; =11/10*number_of_userbits)
     int                 word9, word10;              // indices of the two transformation words in which the control bits, scrambling bits and extra shaping bits are located (see function "shape")
+    int                 curr_sb, curr_esb;
     bool                force_long=false;           // if true: make a long telegram out of this (if this is not already the case). If false: don't mess with the sizes
 
     // function prototypes:
@@ -152,11 +153,12 @@ private:
     void calc_first_word(longnum& U, unsigned int m);
     void compute_check_bits(void);
     t_sb set_next_sb_esb(void);
+    t_sb set_next_sb_esb_incrmnt(void);
 
     // functions needed to perform the tests of candidate telegrams (see subset 36, 4.3.2.5):
     int perform_candidate_checks(int v, int* err_location);  
     int check_alphabet_condition(void);
-    int check_off_synch_parsing_condition(void);
+    int check_off_synch_parsing_condition(bool isPreCheck);
     int calc_hamming_distance(t_word word1, t_word word2);  // part of aperiodicity condition
     int check_aperiodicity_condition(void);
     int get_max_run_valid_words(const longnum& ln);  
